@@ -1,0 +1,107 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #dde5ef;
+    margin: 0;
+    padding: 0;
+}
+.navbar {
+    background: rgb(24,2,10);
+    background: linear-gradient(90deg, rgba(24,2,10,1) 0%, rgba(26,12,57,1) 31%, rgba(18,45,164,0.8464635854341737) 100%);
+    color: #fff;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.navbar h1 {
+    margin: 0;
+    font-size: 24px;
+}
+.navbar .login-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+.container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 15px;
+    display: none;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+.form-group input {
+    width: 95.7%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.form-group input:required {
+    background-color: #f9f9f9;
+}
+.form-group .error {
+    color: red;
+    font-size: 12px;
+    display: none;
+}
+.form-group button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.form-group button:hover {
+    background-color: #0056b3;
+}
+.social-login {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+.social-login button {
+    width: 48%;
+    padding: 10px;
+    background-color: #4267b2;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.social-login button.google-btn {
+    background-color: #db4437;
+}
+.social-login button:hover {
+    opacity: 0.9;
+}
+.login-link {
+    text-align: center;
+    margin-top: 10px;
+}
+.login-link a {
+    color: #007bff;
+    text-decoration: none;
+}

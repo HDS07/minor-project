@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker - Login</title>
+    <link rel="stylesheet" href="login.css">
+    <script src="login.js"></script>
+</head>
+
+<body>
+    <div class="navbar">
+        <h1>Expense Tracker</h1>
+        <a href="../registration/register.html" class="register-btn">Register</a>
+    </div>
+
+    <div class="container">
+        <h2>Login</h2>
+        <form>
+            <div class="form-group">
+                <label for="email">Email <span>*</span></label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password <span>*</span></label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Login</button>
+            </div>
+            <div class="social-login">
+                <button type="button" class="google-btn">Google Login</button>
+                <button type="button" class="facebook-btn">Facebook Login</button>
+            </div>
+        </form>
+        <div class="login-link">
+            Not account? <a href="../registration/register.html">Register</a>
+        </div>
+    </div>
+</body>
+
+</html>
