@@ -2,6 +2,7 @@ document.getElementById('registerForm').addEventListener('submit', function(even
     event.preventDefault();
 
     // Get form values
+    const username = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
@@ -24,7 +25,4 @@ document.getElementById('registerForm').addEventListener('submit', function(even
         document.getElementById('passwordError').style.display = 'block';
         return;
     }
-
-    // Submit the form or handle registration
-    alert('Registration successful!');
 });

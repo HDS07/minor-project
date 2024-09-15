@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+</head>
+<body>
+    <form id="registrationForm">
+        <label for="username">Username:</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Register</button>
+    </form>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const username = document.getElementById('name').value;
+
+            // Store the username in localStorage
+            localStorage.setItem('name', username);
+
+            // Redirect to the main page
+            window.location.href = 'main.html';
+        });
+    </script>
+</body>
+</html>
