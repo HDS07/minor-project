@@ -247,12 +247,12 @@ const updateAccountDetails = asyncHandler(async(req,res)=>{
         throw new ApiError(400,"All Fields are Required")
     }
 
-    const user = User.findByIdAndUpdate(
+    const user = await User.findByIdAndUpdate(
         req.user?._id,
         {
             //MongoDb Operators
             $set:{
-                fullName,
+                fullName:fullName,
                 email: email
             }
 
