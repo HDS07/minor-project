@@ -10,7 +10,7 @@
   "author": "Aditya Yadav",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^3.1.4",
+    "nodemon": "^3.1.7",
     "prettier": "^3.3.3"
   },
   "dependencies": {
