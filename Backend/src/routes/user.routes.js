@@ -11,7 +11,14 @@ import {
 import {verifyJWT} from "../middlewares/auth.middleware.js"
 
 const router = Router()
-router.route("/register").post(registerUser)
+router.route("/register")
+.get((req,res)=>{
+    res.render('register', {
+        title: 'User Registration',
+        heading: 'Register Here'
+    });
+})
+.post(registerUser)
 router.route("/login").post(loginUser)
 
 //Secured routes
