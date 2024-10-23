@@ -21,6 +21,7 @@ const generateAccessAndRefreshTokens = async(userId)=>{
 }
 
 const registerUser = asyncHandler(async(req,res)=>{
+    console.log(req.body);
     //get details from frontend
     //validation - not empty
     //check if user already exists : username , email
@@ -32,6 +33,7 @@ const registerUser = asyncHandler(async(req,res)=>{
     //return res
 
     const {fullName, email,username , password} = req.body
+    console.log(fullName);
     //console.log("email :- ",email);
 
     if(
