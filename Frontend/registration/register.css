@@ -1,28 +1,35 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #dde5ef;
+    background-color: #f5efef;
     margin: 0;
     padding: 0;
 }
 .navbar {
-    background: rgb(24,2,10);
-    background: linear-gradient(90deg, rgba(24,2,10,1) 0%, rgba(26,12,57,1) 31%, rgba(18,45,164,0.8464635854341737) 100%);
-    color: #fff;
+    background-color: white;
+    color: #000;
     padding: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.navbar h1 {
-    margin: 0;
+.fin {
+    color: green;
+    font-weight: 900;
+    font-size: 24px;
+}
+.track {
+    color: black;
+    font-weight: 800;
     font-size: 24px;
 }
 .navbar .login-btn {
-    background-color: #007bff;
+    background-color: green;
     color: #fff;
     padding: 10px 20px;
     text-decoration: none;
     border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Shadow effect */
+    transition: box-shadow 0.3s ease; /* Smooth shadow transition */
 }
 .container {
     max-width: 500px;
@@ -35,6 +42,8 @@ body {
 .container h2 {
     text-align: center;
     margin-bottom: 20px;
+    color: #218838;
+    font-weight: 700;
 }
 .error-message {
     color: red;
@@ -66,7 +75,7 @@ body {
 .form-group button {
     width: 100%;
     padding: 10px;
-    background-color: #007bff;
+    background-color: #28a745;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -74,34 +83,19 @@ body {
     cursor: pointer;
 }
 .form-group button:hover {
-    background-color: #0056b3;
-}
-.social-login {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-}
-.social-login button {
-    width: 48%;
-    padding: 10px;
-    background-color: #4267b2;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-}
-.social-login button.google-btn {
-    background-color: #db4437;
-}
-.social-login button:hover {
-    opacity: 0.9;
+    background-color: #218838;
 }
 .login-link {
     text-align: center;
-    margin-top: 10px;
+    margin-top: 20px;
 }
+
 .login-link a {
-    color: #007bff;
+    color: green;
     text-decoration: none;
 }
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+

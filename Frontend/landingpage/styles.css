@@ -7,7 +7,7 @@
 
 body {
     height: 100vh;
-    background-color: #f4f4f4;
+    background-color: #f5efef;
 }
 
 .navbar {
@@ -93,6 +93,11 @@ body {
 
 .get-started-btn:hover, .nav-buttons button:hover {
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+}
+
+a{
+    color: white;
+    text-decoration: none;
 }
 .card-box{
     width: 100%;
