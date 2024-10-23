@@ -8,24 +8,17 @@ import {
     getCurrentUser,
     updateAccountDetails
 } from "../controllers/user.controller.js"
-import {upload} from "../middlewares/multer.middleware.js"
 import {verifyJWT} from "../middlewares/auth.middleware.js"
 
 const router = Router()
-router.route("/register").post(
-    upload.fields([
-        {
-            name:"avatar",
-            maxCount:1
-        },
-        {
-            name:"coverImage",
-            maxCount:1
-        }
-    ]),
-    registerUser
-)
-
+router.route("/register")
+.get((req,res)=>{
+    res.render('register', {
+        title: 'User Registration',
+        heading: 'Register Here'
+    });
+})
+.post(registerUser)
 router.route("/login").post(loginUser)
 
 //Secured routes
