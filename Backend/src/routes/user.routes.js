@@ -23,7 +23,7 @@ router.route("/register")
 .post(registerUser)
 
     res.sendFile(path.join(__dirname,'../registration/check.html'))
-})
+
 .post(
     upload.fields([
         {
@@ -38,7 +38,6 @@ router.route("/register")
     registerUser
 )
 
-a700d30 (updated work)
 router.route("/login").post(loginUser)
 
 //Secured routes
