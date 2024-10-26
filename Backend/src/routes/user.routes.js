@@ -9,19 +9,30 @@ import {
     updateAccountDetails
 } from "../controllers/user.controller.js"
 import {verifyJWT} from "../middlewares/auth.middleware.js"
-import {upload} from "../middlewares/multer.middleware.js"
 
 const router = Router()
 router.route("/register")
 .get((req,res)=>{
     res.render('register', {
-        title: 'User Registration',
-        heading: 'Register Here'
+        title: 'Expense Tracker - Register',
+        emailExists: false, // Set to true if an error occurred
+        emailError: false,  // Set to true if there's an email error
+        passwordError: false, // Set to true if passwords don't match
+        name: '',         // Set this to prefill the name field
+        username: '',     // Set this to prefill the username field
+        email: ''         // Set this to prefill the email field
     });
 })
 .post(registerUser)
 
-router.route("/login").post(loginUser)
+router.route("/login")
+.get((req, res)=>{
+    res.render('login', { 
+        title: 'Expense Tracker - Login',
+        email: '' 
+    });
+})
+.post(loginUser)
 
 //Secured routes
 router.route("/logout").post(verifyJWT,logoutUser)

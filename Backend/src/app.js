@@ -21,12 +21,14 @@ app.set('views', path.join(__dirname, 'views'));
 //app.use(express.something) //To set express configuration
 app.use(express.json({limit:"16kb"}))
 app.use(express.urlencoded({extended:true,limit:"16kb"}))
-app.use(express.static("public"))
+// app.use(express.static("public"))
+app.use(express.static(path.join(__dirname,'public')))
 app.use(cookieParser())
 
 //Importing Routes
 import userRouter from "./routes/user.routes.js"
-
+import landingRouter from "./routes/landing.route.js"
+app.use("/api/v1/landing",landingRouter)
 //Routes Declaration
 app.use("/api/v1/users",userRouter)
 //http://localhost:8000/users/register
