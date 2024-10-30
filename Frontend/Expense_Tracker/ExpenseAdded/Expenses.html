@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="Expense.css">
+</head>
+
+<body>
+
+    <div class="nav-bar">
+        <div class="navbuttons">
+            <p><span class="fin">Fin</span><span class="track">Track</span></p>
+            <button><a href="../main/main.html">Overview</a></button>
+            <button><a href="../IncomeAdded/income.html">Income</a></button>
+            <button><a href="../ExpenseAdded/Expenses.html">Expense</a></button>
+        </div>
+        <div>
+            <button id="account">Account</button>
+        </div>
+    </div>
+
+    <div class="header">
+        <div id="header-buttons">
+            <button>help?</button>
+            <button>account</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <span id="dateselection">
+            <h2>Select Date:</h2>
+            <input type="date" id="expense-date">
+        </span>
+
+        <h2>Total Expense:</h2>
+        <div id="total-expense">₹00</div>
+
+        <button id="add-expense-btn" style="font-size: 18px; padding: 12px 30px;">+ Add Expense</button>
+
+        <table id="expense-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Category</th>
+                    <th>Subcategory</th>
+                    <th>Amount</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+
+        <button id="save-expense-btn" style="font-size: 18px; padding: 12px 30px; margin-top: 30px;">Save Expense</button>
+    </div>
+    <script>
+        // Sample categories for suggestion
+        let categories = ["Transport", "Food", "Entertainment", "Shopping"];
+
+        // Show the expense table on button click
+        document.getElementById("add-expense-btn").addEventListener("click", () => {
+            const expenseTable = document.getElementById("expense-table");
+            expenseTable.style.display = "table"; // Show table
+            addExpenseRow(); // Add the first row when the table is shown
+        });
+
+        document.getElementById("save-expense-btn").addEventListener("click", saveExpense);
+
+        function addExpenseRow() {
+            const tableBody = document.getElementById("expense-table").getElementsByTagName("tbody")[0];
+            const row = document.createElement("tr");
+
+            // Date cell
+            const dateCell = document.createElement("td");
+            const expenseDateInput = document.getElementById("expense-date");
+            dateCell.innerText = expenseDateInput.value; // Get the selected date
+            row.appendChild(dateCell);
+
+            // Category cell with autocomplete
+            const categoryCell = document.createElement("td");
+            const categoryInput = document.createElement("input");
+            categoryInput.type = "text";
+            categoryInput.placeholder = "Enter category";
+            categoryInput.className = "category-input";
+            categoryInput.addEventListener("input", showSuggestions);
+            categoryInput.addEventListener("blur", addToSuggestions);
+            categoryCell.appendChild(categoryInput);
+            row.appendChild(categoryCell);
+
+            // Subcategory cell
+            const subcategoryCell = document.createElement("td");
+            const subcategoryInput = document.createElement("input");
+            subcategoryInput.type = "text";
+            subcategoryInput.placeholder = "Enter subcategory";
+            subcategoryCell.appendChild(subcategoryInput);
+            row.appendChild(subcategoryCell);
+
+            // Amount cell
+            const amountCell = document.createElement("td");
+            const amountInput = document.createElement("input");
+            amountInput.type = "number";
+            amountInput.placeholder = "Enter amount";
+            amountInput.className = "amount-input";
+            amountInput.addEventListener("input", updateTotalExpense);
+            amountCell.appendChild(amountInput);
+            row.appendChild(amountCell);
+
+            // Action cell with delete button
+            const actionCell = document.createElement("td");
+            const deleteButton = document.createElement("span");
+            deleteButton.innerText = "🗑️";
+            deleteButton.className = "delete-btn";
+            deleteButton.addEventListener("click", () => {
+                tableBody.removeChild(row);
+                updateTotalExpense(); // Update total when an expense is deleted
+            });
+            actionCell.appendChild(deleteButton);
+            row.appendChild(actionCell);
+
+            tableBody.appendChild(row);
+        }
+
+        function updateTotalExpense() {
+            const amountInputs = document.getElementsByClassName("amount-input");
+            let total = 0;
+            for (let input of amountInputs) {
+                const value = parseFloat(input.value) || 0; // Handle NaN
+                total += value;
+            }
+            document.getElementById("total-expense").innerText = "₹" + total.toFixed(2);
+        }
+
+        function showSuggestions(event) {
+            const input = event.target;
+            const suggestionBox = document.createElement("div");
+            suggestionBox.className = "suggestion-box";
+            suggestionBox.style.width = input.offsetWidth + "px";
+            suggestionBox.style.left = input.getBoundingClientRect().left + "px";
+            suggestionBox.style.top = input.getBoundingClientRect().bottom + window.scrollY + "px";
+            suggestionBox.style.position = "absolute";
+            suggestionBox.style.backgroundColor = "white";
+            suggestionBox.style.border = "1px solid #ccc";
+            suggestionBox.style.zIndex = "1000";
+            suggestionBox.style.maxHeight = "150px";
+            suggestionBox.style.overflowY = "auto";
+
+            const categoryText = input.value;
+            categories.forEach((category) => {
+                if (category.toLowerCase().startsWith(categoryText.toLowerCase())) {
+                    const suggestionItem = document.createElement("div");
+                    suggestionItem.className = "suggestion-item";
+                    suggestionItem.innerText = category;
+                    suggestionItem.style.padding = "5px";
+                    suggestionItem.style.cursor = "pointer";
+                    suggestionItem.addEventListener("mousedown", (e) => {
+                        e.preventDefault(); // Prevents input blur from firing
+                        input.value = category; // Set input value to selected category
+                        suggestionBox.remove(); // Remove the suggestion box
+                    });
+                    suggestionBox.appendChild(suggestionItem);
+                }
+            });
+
+            // Remove any existing suggestion box before appending a new one
+            const existingBox = input.parentNode.querySelector(".suggestion-box");
+            if (existingBox) {
+                existingBox.remove();
+            }
+            input.parentNode.appendChild(suggestionBox);
+
+            // Hide suggestion box when input loses focus
+            input.addEventListener("blur", () => {
+                setTimeout(() => suggestionBox.remove(), 200); // Timeout for click selection
+            });
+        }
+
+        function addToSuggestions() {
+            const input = this;
+            const value = input.value.trim();
+            if (value && !categories.includes(value)) {
+                categories.push(value); // Add custom category to suggestions
+            }
+        }
+
+        function saveExpense() {
+            const tableBody = document.getElementById("expense-table").getElementsByTagName("tbody")[0];
+            const rows = tableBody.getElementsByTagName("tr");
+            const expenses = []; // Array to hold each expense with selected date
+
+            const selectedDate = document.getElementById("expense-date").value; // Get the selected date
+            if (!selectedDate) {
+                alert("Please select a date for the expense.");
+                return;
+            }
+
+            for (let row of rows) {
+                const cells = row.getElementsByTagName("td");
+                const category = cells[1].getElementsByTagName("input")[0].value.trim();
+                const subcategory = cells[2].getElementsByTagName("input")[0].value.trim();
+                const amount = cells[3].getElementsByTagName("input")[0].value.trim();
+
+                // Only add rows where all fields are filled
+                if (category && subcategory && amount) {
+                    expenses.push({
+                        date: selectedDate,
+                        category,
+                        subcategory,
+                        amount: parseFloat(amount),
+                    });
+                }
+            }
+
+            if (expenses.length > 0) {
+                let message = `Expenses saved for ${selectedDate}:\n`;
+                expenses.forEach((expense, index) => {
+                    message += `${index + 1}. Category: ${expense.category}, Subcategory: ${expense.subcategory}, Amount: ₹${expense.amount}\n`;
+                });
+                alert(message);
+                
+                document.getElementById("expense-date").value = "";
+                tableBody.innerHTML = ""; // Clear all rows
+                updateTotalExpense(); // Reset total expense display
+            } else {
+                alert("No complete expenses to save.");
+            }
+        }
+
+    </script>
+</body>
+
+</html>
