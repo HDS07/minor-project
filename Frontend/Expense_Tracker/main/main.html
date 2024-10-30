@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+body,
+html {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.nav-bar {
+    width: 200px;
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    left: 0;
+    top: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    z-index: 1;
+}
+
+.fin {
+    font-size: 24px;
+    color: green;
+    font-weight: 900;
+}
+
+.track {
+    font-size: 24px;
+    color: black;
+    font-weight: 800;
+}
+
+.navbuttons {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+    margin-top: 10px;
+}
+
+.nav-bar button {
+    font-size: 20px;
+    border: none;
+    background-color: white;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.nav-bar button:hover {
+    background-color: #f5efef;
+}
+
+#account {
+    margin: 10px 10px;
+    padding: 10px 25px;
+}
+
+.header {
+    width: calc(100vw - 200px);
+    height: 70px;
+    margin-left: 200px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    position: fixed;
+    top: 0;
+}
+
+.header button {
+    border: 1px solid grey;
+    background-color: #f5efef;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin-right: 10px;
+    padding: 5px;
+    border-radius: 4px;
+}
+.header button:hover {
+    background-color: #cbc5c5;
+}
+
+#header-buttons {
+    position: absolute;
+    right: 10px;
+}
+        .main-content {
+            margin-top: 70px;
+            margin-left: 200px;
+            padding: 20px;
+            background-color: #f5efef;
+            min-height: calc(100vh - 70px);
+            width: calc(100vw - 200px);
+        }
+        .box1{
+            border: 1px solid grey;
+            padding:10px;
+        }
+        .box1 h3{
+            margin-bottom:3px;
+            font-size: 22px;
+        }
+        .box1 p{
+            font-size: 22px;
+        }
+        .expense-income-box{
+            display: flex;
+            gap: 150px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-bar">
+        <div class="navbuttons">
+            <p><span class="fin">Fin</span><span class="track">Track</span></p>
+            <button><a href="../main/main.html">Overview</a></button>
+            <button><a href="../IncomeAdded/income.html">Income</a></button>
+            <button><a href="../ExpenseAdded/Expenses.html">Expense</a></button>
+        </div>
+        <div>
+            <button id="account">Account</button>
+        </div>
+    </div>
+
+    <div class="header">
+        <div id="header-buttons">
+            <button>help?</button>
+            <button>account</button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <h2>Welcome #USER to FinTrack !!</h2>
+        <br>
+        <div class="box1">
+            <div class="balance-box">
+                <h3>Balance</h3>
+                <p id="balanceAmount">00000</p>
+            </div>
+            <br><br>
+            <div class="expense-income-box">
+                <div>
+                <h3>Expense</h3>
+                <p id="expenseAmount">00000</p>
+                </div>
+                <div>
+                <h3>Income</h3>
+                <p id="incomeAmount">00000</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

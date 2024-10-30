@@ -1,0 +1,17 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    display: flex;
+}
+.box1{
+    width: 10%;
+    border: 1px solid black;
+    height: 100vh;
+}
+.box2{
+    width: 90%;
+    border: 1px solid black;
+    height: 100vh;
+}
