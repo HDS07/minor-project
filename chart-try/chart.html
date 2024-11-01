@@ -11,11 +11,13 @@
       justify-content: space-around;
       align-items: center;
       margin: 20px;
+      border: 1px solid black;
     }
 
     .chart-box {
       width: 40%; /* Adjust this value as per your needs */
       text-align: center;
+      border: 1px solid black;
     }
 
     canvas {
@@ -49,7 +51,6 @@
         datasets: [{
           data: [3600, 180, 3420], // Replace with dynamic data from the database
           backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-          hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
         }]
       },
       options: {
