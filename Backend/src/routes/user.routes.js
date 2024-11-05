@@ -8,6 +8,12 @@ import {
     getCurrentUser,
     updateAccountDetails
 } from "../controllers/user.controller.js"
+import {
+    addIncome
+}from "../controllers/addIncome.controller.js"
+import {
+    addExpense
+}from "../controllers/addExpense.controller.js"
 import {verifyJWT} from "../middlewares/auth.middleware.js"
 
 const router = Router()
@@ -40,5 +46,7 @@ router.route("/refresh-token").post(refreshAccessToken)
 router.route("/change-password").post(verifyJWT,changeCurrentPassword)
 router.route("/current-user").get(verifyJWT,getCurrentUser)
 router.route("/update-account").patch(verifyJWT,updateAccountDetails)
+router.route("/addIncome").patch(verifyJWT,addIncome)
+router.route("/addExpense").patch(verifyJWT,addExpense)
 
 export default router

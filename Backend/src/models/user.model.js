@@ -34,7 +34,25 @@ const userSchema = new Schema(
         },
         finCoin:{
             type:String
-        }
+        },
+        balance:{
+            type:Number,
+            default:0
+        },
+        income:{
+            type:Number,
+            default:0
+        },
+        expense:{
+            type:Number,
+            default:0
+        },
+        expenses:[
+            {
+                type:Schema.Types.ObjectId,
+                ref:'Expense'
+            }
+        ]
     },
     {
         timestamps:true
