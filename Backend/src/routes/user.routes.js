@@ -48,5 +48,14 @@ router.route("/current-user").get(verifyJWT,getCurrentUser)
 router.route("/update-account").patch(verifyJWT,updateAccountDetails)
 router.route("/addIncome").patch(verifyJWT,addIncome)
 router.route("/addExpense").patch(verifyJWT,addExpense)
+router.route("/dashboard")
+.get((req,res)=>{
+    const user = {
+        username: 'JohnDoe',
+        balance: 5000,
+        expenses: []
+    };
+    res.render('dashboard/dash',{user})
+})
 
 export default router
