@@ -6,7 +6,8 @@ import {
     refreshAccessToken,
     changeCurrentPassword,
     getCurrentUser,
-    updateAccountDetails
+    updateAccountDetails,
+    renderDashboard
 } from "../controllers/user.controller.js"
 import {
     addIncome
@@ -46,16 +47,16 @@ router.route("/refresh-token").post(refreshAccessToken)
 router.route("/change-password").post(verifyJWT,changeCurrentPassword)
 router.route("/current-user").get(verifyJWT,getCurrentUser)
 router.route("/update-account").patch(verifyJWT,updateAccountDetails)
-router.route("/addIncome").patch(verifyJWT,addIncome)
-router.route("/addExpense").patch(verifyJWT,addExpense)
-router.route("/dashboard")
+router.route("/income/addIncome").patch(verifyJWT,addIncome)
+router.route("/expense/addExpense").patch(verifyJWT,addExpense)
+router.route("/dashboard").get(verifyJWT,renderDashboard)
+router.route("/expense")
 .get((req,res)=>{
-    const user = {
-        username: 'JohnDoe',
-        balance: 5000,
-        expenses: []
-    };
-    res.render('dashboard/dash',{user})
+    res.render('dashboard/expense')
+})
+router.route("/income")
+.get((req,res)=>{
+    res.render('dashboard/income')
 })
 
 export default router

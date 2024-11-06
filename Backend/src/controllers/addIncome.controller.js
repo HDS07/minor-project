@@ -15,7 +15,10 @@ const addIncome = asyncHandler(async(req,res)=>{
 
     const user = await User.findById(req.user?._id)
 
-    user.income=amount
+    user.income+=parseFloat(amount)
+    const income=user.income || 0
+    const expense=user.expense || 0
+    user.balance=income-expense
     await user.save({validateBeforeSave:false})
 
     return res

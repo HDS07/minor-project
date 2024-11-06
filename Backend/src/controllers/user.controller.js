@@ -244,6 +244,17 @@ const updateAccountDetails = asyncHandler(async(req,res)=>{
     return res.status(200)
     .json(new ApiResponse(200,user,"Account details Updated Successfully"))
 })
+
+const renderDashboard = asyncHandler(async(req,res)=>{
+    const userId=req.user._id;
+    const user=await User.findById(userId)
+    if(!user){
+        return res.status(404)
+        .json(new ApiResponse(404,null,"User not Found"))
+    }
+    res.render('dashboard/dash',{user})
+})
+
 export {
     registerUser,
     loginUser,
@@ -251,5 +262,6 @@ export {
     refreshAccessToken,
     changeCurrentPassword,
     getCurrentUser,
-    updateAccountDetails
+    updateAccountDetails,
+    renderDashboard
 }

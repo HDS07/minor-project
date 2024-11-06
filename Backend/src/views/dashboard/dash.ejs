@@ -15,9 +15,9 @@
     <div class="nav-bar">
         <div class="navbuttons">
             <p><span class="fin">Fin</span><span class="track">Track</span></p>
-            <button><a href="/main/main">Overview</a></button>
-            <button><a href="/IncomeAdded/income">Income</a></button>
-            <button><a href="/ExpenseAdded/expenses">Expense</a></button>
+            <button><a href="/api/v1/users/dashboard">Overview</a></button>
+            <button><a href="/api/v1/users/income">Income</a></button>
+            <button><a href="/api/v1/users/expense">Expense</a></button>
         </div>
         <div>
             <button id="account">Account</button>
@@ -39,16 +39,16 @@
                 <div class="box1">
                     <div class="balance-box">
                         <h3>Balance</h3>
-                        <p id="balanceAmount"><%= user.balance || '00000' %></p>
+                        <p id="balanceAmount"><%= user.balance || '0' %></p>
                     </div>
                     <div class="expense-income-box">
                         <div>
                             <h3>Expense</h3>
-                            <p id="expenseAmount"><%= user.expense || '00000' %></p>
+                            <p id="expenseAmount"><%= user.expense || '0' %></p>
                         </div>
                         <div>
                             <h3>Income</h3>
-                            <p id="incomeAmount"><%= user.income || '00000' %></p>
+                            <p id="incomeAmount"><%= user.income || '0' %></p>
                         </div>
                     </div>
                 </div>
@@ -79,29 +79,6 @@
                 </div>
                 <button id="convert-button">Convert</button>
                 <p id="result"></p>
-            </div>
-            <div class="history-box">
-                <h3>HISTORY</h3>
-                <div class="table-container">
-                    <table class="transaction-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Category</th>
-                                <th>Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% user.expenses.forEach(expense => { %>
-                            <tr>
-                                <td><%= expense.date.toISOString().split('T')[0] %></td>
-                                <td><%= expense.category %></td>
-                                <td>$<%= expense.amount.toFixed(2) %></td>
-                            </tr>
-                            <% }) %>
-                        </tbody>
-                    </table>
-                </div>
             </div>
         </div>
     </div>

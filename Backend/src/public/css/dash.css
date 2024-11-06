@@ -220,7 +220,6 @@ canvas {
 
 .currency-converter {
     position: relative;
-    top: -50px;
     width: 61%;
     height: 100%;
     border: 1px solid rgb(167, 167, 167);

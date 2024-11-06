@@ -24,8 +24,10 @@ const addExpense = asyncHandler(async(req,res)=>{
         category,
         subcategory
     })
-
-    user.expense=amount
+    user.expense+=parseFloat(amount)
+    const income=user.income || 0
+    const expense=user.expense || 0
+    user.balance=income-expense
     await user.save({validateBeforeSave:false})
 
     await User.findByIdAndUpdate(
