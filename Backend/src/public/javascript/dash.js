@@ -1,4 +1,6 @@
 var ctxPie = document.getElementById("expensePieChart").getContext("2d");
+var noDataMessage = document.querySelector(".no-data-message");
+
 function initPieChart() {
   var expensePieChart = new Chart(ctxPie, {
     type: "pie",
@@ -6,7 +8,7 @@ function initPieChart() {
       labels: ["Total Expense", "Total Income", "Net Balance"],
       datasets: [
         {
-          data: [0, 0, 0], // Replace with dynamic data from the database
+          data: [0, 0, 0], // Placeholder data, will be updated dynamically
           backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
         },
       ],
@@ -30,26 +32,43 @@ function initPieChart() {
   return expensePieChart;
 }
 
-const expensePieChart=initPieChart();
+const expensePieChart = initPieChart();
 
 document.addEventListener("DOMContentLoaded", () => {
   const url = "http://localhost:3000/api/v1/users/current-user";
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
-      const expense = data.data.expense || 500;
-      const income = data.data.income || 1500;
-      const balance = data.data.balance || 1000;
+      const expense = data.data.expense || 0;
+      const income = data.data.income || 0;
+      const balance = data.data.balance || 0;
       updatePieChart(expense, income, balance);
-      console.log("Job Done");
+      console.log("Data fetched successfully");
     })
-    .catch((error) => console.log("Error while fetching Data :- ", error));
+    .catch((error) => console.log("Error while fetching data:", error));
 });
 
 function updatePieChart(expense, income, balance) {
-  expensePieChart.data.datasets[0].data = [expense, income, balance];
+  const expenseData = [expense, income, balance];
+
+  // Check if all data values are zero
+  const allZero = expenseData.every((value) => value === 0);
+
+  if (allZero) {
+    // Show "No data" message and hide the chart
+    noDataMessage.style.display = "block";
+    ctxPie.canvas.style.display = "none";
+  } else {
+    // Hide "No data" message and show the chart
+    noDataMessage.style.display = "none";
+    ctxPie.canvas.style.display = "block";
+  }
+
+  // Update chart data
+  expensePieChart.data.datasets[0].data = expenseData;
   expensePieChart.update();
 }
+
 
 var ctxDoughnut = document
   .getElementById("categoryDoughnutChart")

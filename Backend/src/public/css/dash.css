@@ -179,6 +179,11 @@ a {
     flex-direction: column;
     align-items: center;
 }
+.no-data-message{
+    padding-top: 150px;
+    font-size: larger;
+    
+}
 
 .chart-box2 {
     text-align: center;
