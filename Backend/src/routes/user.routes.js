@@ -58,5 +58,14 @@ router.route("/income")
 .get((req,res)=>{
     res.render('dashboard/income')
 })
+router.route("/info")
+.get((req,res)=>{
+    const user = {
+        fullName: "Null",
+        email: "null07@gmail.com",
+        username: "abcd1234",
+    };
+    res.render('dashboard/account',{user})
+})
 
 export default router
