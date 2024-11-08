@@ -48,6 +48,52 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch((error) => console.log("Error while fetching data:", error));
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  const url = "http://localhost:3000/api/v1/users/expense/history"; // Adjust this endpoint to match your actual route
+  fetch(url)
+      .then(response => response.json())
+      .then(data => {
+          if (data.success) {
+            console.log(data);
+              populateExpenseHistory(data.data);
+          } else {
+              console.error("Error fetching expense history:", data.message);
+          }
+      })
+      .catch(error => console.error("Error fetching data:", error));
+});
+
+function populateExpenseHistory(expenses) {
+  const tableBody = document.getElementById("expenseHistoryTable").querySelector("tbody");
+  tableBody.innerHTML = ""; // Clear existing rows if any
+
+  expenses.forEach((expense, index) => {
+      const row = document.createElement("tr");
+
+      // Serial Number
+      const serialCell = document.createElement("td");
+      serialCell.textContent = index + 1;
+      row.appendChild(serialCell);
+
+      // Date
+      const dateCell = document.createElement("td");
+      dateCell.textContent = new Date(expense.date).toLocaleDateString(); // Formatting date if necessary
+      row.appendChild(dateCell);
+
+      // Category
+      const categoryCell = document.createElement("td");
+      categoryCell.textContent = expense.category;
+      row.appendChild(categoryCell);
+
+      // Amount
+      const amountCell = document.createElement("td");
+      amountCell.textContent = `$${expense.amount}`;
+      row.appendChild(amountCell);
+
+      tableBody.appendChild(row);
+  });
+}
+
 function updatePieChart(expense, income, balance) {
   const expenseData = [expense, income, balance];
 

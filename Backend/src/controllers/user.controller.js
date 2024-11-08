@@ -3,6 +3,7 @@ import {ApiError} from "../utils/ApiError.js"
 import {User} from "../models/user.model.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
+import {Expense} from "../models/expense.model.js"
 
 const generateAccessAndRefreshTokens = async(userId)=>{
     try{
@@ -255,6 +256,17 @@ const renderDashboard = asyncHandler(async(req,res)=>{
     res.render('dashboard/dash',{user})
 })
 
+const getHistory = asyncHandler(async(req,res)=>{
+    const userId=req.user._id;
+    const expense=await Expense.find({userId:userId});
+    if(!expense){
+        return res.status(404)
+        .json(new ApiResponse(404,null,"Fail to Retrieve Data from User"))
+    }
+    return res.status(200)
+    .json(new ApiResponse(200,expense,"History Sended Successfully"))
+})
+
 export {
     registerUser,
     loginUser,
@@ -263,5 +275,6 @@ export {
     changeCurrentPassword,
     getCurrentUser,
     updateAccountDetails,
-    renderDashboard
+    renderDashboard,
+    getHistory
 }

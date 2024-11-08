@@ -404,3 +404,43 @@ select option {
 .transaction-table td {
     color: #333;
 }
+
+/* Styles for the expense history table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    font-weight: bold;
+    background-color: #f4f4f4;
+}
+
+td {
+    font-size: 16px;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+table caption {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+    padding-bottom: 10px;
+    color: #333;
+}

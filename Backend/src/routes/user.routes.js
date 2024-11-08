@@ -7,7 +7,8 @@ import {
     changeCurrentPassword,
     getCurrentUser,
     updateAccountDetails,
-    renderDashboard
+    renderDashboard,
+    getHistory
 } from "../controllers/user.controller.js"
 import {
     addIncome
@@ -67,5 +68,7 @@ router.route("/info")
     };
     res.render('dashboard/account',{user})
 })
+
+router.route("/expense/history").get(verifyJWT,getHistory)
 
 export default router
