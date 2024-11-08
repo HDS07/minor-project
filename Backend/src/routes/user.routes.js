@@ -8,7 +8,8 @@ import {
     getCurrentUser,
     updateAccountDetails,
     renderDashboard,
-    getHistory
+    getHistory,
+    getCategory
 } from "../controllers/user.controller.js"
 import {
     addIncome
@@ -70,5 +71,6 @@ router.route("/info")
 })
 
 router.route("/expense/history").get(verifyJWT,getHistory)
+router.route("/expense/category").get(verifyJWT,getCategory)
 
 export default router

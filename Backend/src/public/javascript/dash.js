@@ -94,6 +94,77 @@ function populateExpenseHistory(expenses) {
   });
 }
 
+// Function to initialize the doughnut chart with default data
+function initCategoryDoughnutChart() {
+  const ctxDoughnut = document
+    .getElementById("categoryDoughnutChart")
+    .getContext("2d");
+
+  return new Chart(ctxDoughnut, {
+    type: "doughnut",
+    data: {
+      labels: [], // Labels will be set dynamically
+      datasets: [
+        {
+          data: [], // Data will be set dynamically
+          backgroundColor: [
+            "#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"
+          ],
+          hoverBackgroundColor: [
+            "#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"
+          ]
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      cutout: "60%", // Makes it a ring/doughnut chart
+      plugins: {
+        legend: {
+          position: "bottom"
+        },
+        tooltip: {
+          callbacks: {
+            label: function (tooltipItem) {
+              return tooltipItem.label + ": $" + tooltipItem.raw;
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+// Initialize the chart
+const categoryDoughnutChart = initCategoryDoughnutChart();
+
+// Function to fetch data and update the chart
+function updateCategoryDoughnutChart() {
+  const url = "http://localhost:3000/api/v1/users/expense/category"; // Adjust this endpoint to match your actual route
+  fetch(url)
+    .then(response => response.json())
+    .then(responseData => {
+      if (responseData.success && Array.isArray(responseData.data)) {
+        // Extract categories and amounts
+        const categories = responseData.data.map(expense => expense.category);
+        const amounts = responseData.data.map(expense => expense.amount);
+
+        // Update chart data
+        categoryDoughnutChart.data.labels = categories;
+        categoryDoughnutChart.data.datasets[0].data = amounts;
+        categoryDoughnutChart.update();
+      } else {
+        console.error("Failed to retrieve data:", responseData.message);
+      }
+    })
+    .catch(error => console.error("Error fetching category data:", error));
+}
+
+// Call the function to fetch data and update the chart on page load
+document.addEventListener("DOMContentLoaded", updateCategoryDoughnutChart);
+
+
+
 function updatePieChart(expense, income, balance) {
   const expenseData = [expense, income, balance];
 
@@ -114,52 +185,6 @@ function updatePieChart(expense, income, balance) {
   expensePieChart.data.datasets[0].data = expenseData;
   expensePieChart.update();
 }
-
-
-var ctxDoughnut = document
-  .getElementById("categoryDoughnutChart")
-  .getContext("2d");
-var categoryDoughnutChart = new Chart(ctxDoughnut, {
-  type: "doughnut",
-  data: {
-    labels: ["Home", "Transportation", "Entertainment", "Food", "Other"],
-    datasets: [
-      {
-        data: [100, 200, 50, 3600, 120], // Replace with dynamic data from the database
-        backgroundColor: [
-          "#FF6384",
-          "#36A2EB",
-          "#FFCE56",
-          "#4BC0C0",
-          "#9966FF",
-        ],
-        hoverBackgroundColor: [
-          "#FF6384",
-          "#36A2EB",
-          "#FFCE56",
-          "#4BC0C0",
-          "#9966FF",
-        ],
-      },
-    ],
-  },
-  options: {
-    responsive: true,
-    cutout: "60%", // Makes the chart a ring/doughnut chart
-    plugins: {
-      legend: {
-        position: "bottom",
-      },
-      tooltip: {
-        callbacks: {
-          label: function (tooltipItem) {
-            return tooltipItem.label + ": $" + tooltipItem.raw;
-          },
-        },
-      },
-    },
-  },
-});
 
 let api = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`;
 const fromDropDown = document.getElementById("from-currency-select");

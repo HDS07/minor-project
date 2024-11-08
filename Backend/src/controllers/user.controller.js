@@ -264,7 +264,25 @@ const getHistory = asyncHandler(async(req,res)=>{
         .json(new ApiResponse(404,null,"Fail to Retrieve Data from User"))
     }
     return res.status(200)
-    .json(new ApiResponse(200,expense,"History Sended Successfully"))
+    .json(new ApiResponse(200,expense,"History Retrieve Successful"))
+})
+
+const getCategory = asyncHandler(async(req,res)=>{
+    const userId=req.user._id;
+    const expensebycategory = await Expense.aggregate([
+        {$match:{userId:userId}},
+        {$group:{_id:"$category",totalAmount:{$sum:"$amount"}}}
+    ])
+    const categorydata=expensebycategory.map(expense=>({
+        category:expense._id,
+        amount:expense.totalAmount
+    }))
+    if(!categorydata || categorydata.length===0){
+        return res.status(500)
+        .json(new ApiResponse(500,null,"Fail to Retrieve Data from Database"))
+    }
+    return res.status(200)
+    .json(new ApiResponse(200,categorydata,"Data Retrieve Successful"))
 })
 
 export {
@@ -276,5 +294,6 @@ export {
     getCurrentUser,
     updateAccountDetails,
     renderDashboard,
-    getHistory
+    getHistory,
+    getCategory
 }
