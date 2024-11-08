@@ -26,7 +26,14 @@
 
     <div class="header">
         <div id="header-buttons">
-            <button>help?</button>
+            <button class="help-btn">Help?</button>
+            <pre class="tooltip-text">Click on the Income button to 
+add the Income.  
+Click on the Expense button to 
+add the Expense. 
+Click on the Account button to see
+the detail of the user.
+            </pre>
             <button><a href="/api/v1/users/info">account</a></button>
         </div>
     </div>
@@ -81,6 +88,7 @@
                 <button id="convert-button">Convert</button>
                 <p id="result"></p>
             </div>
+            <!-- <div></div> history-box -->
         </div>
     </div>
     <script src="/javascript/currency-code.js"></script>

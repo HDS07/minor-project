@@ -99,7 +99,41 @@ a {
     position: absolute;
     right: 10px;
 }
+.help-btn {
+    position: relative;
+    background-color: #f5efef;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid grey;
+    cursor: pointer;
+    font-size: 12px;
+}
 
+.tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: rgb(201, 197, 197);
+    color: black;
+    text-align: center;
+    padding: 5px;
+    border-radius: 4px;
+    position: absolute;
+    z-index: 1;
+    top: 100%; /* Position it below the button */
+    left: 20%;
+    transform: translateX(-50%);
+    margin-top: 8px;
+    font-size: 12px;
+    line-height: 1.4;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.help-btn:hover + .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
 .container {
     margin-top: 70px;
     margin-left: 200px;
