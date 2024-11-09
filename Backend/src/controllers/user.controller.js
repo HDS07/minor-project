@@ -3,6 +3,7 @@ import {ApiError} from "../utils/ApiError.js"
 import {User} from "../models/user.model.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
+import {Expense} from "../models/expense.model.js"
 
 const generateAccessAndRefreshTokens = async(userId)=>{
     try{
@@ -255,6 +256,35 @@ const renderDashboard = asyncHandler(async(req,res)=>{
     res.render('dashboard/dash',{user})
 })
 
+const getHistory = asyncHandler(async(req,res)=>{
+    const userId=req.user._id;
+    const expense=await Expense.find({userId:userId});
+    if(!expense){
+        return res.status(404)
+        .json(new ApiResponse(404,null,"Fail to Retrieve Data from User"))
+    }
+    return res.status(200)
+    .json(new ApiResponse(200,expense,"History Retrieve Successful"))
+})
+
+const getCategory = asyncHandler(async(req,res)=>{
+    const userId=req.user._id;
+    const expensebycategory = await Expense.aggregate([
+        {$match:{userId:userId}},
+        {$group:{_id:"$category",totalAmount:{$sum:"$amount"}}}
+    ])
+    const categorydata=expensebycategory.map(expense=>({
+        category:expense._id,
+        amount:expense.totalAmount
+    }))
+    if(!categorydata || categorydata.length===0){
+        return res.status(500)
+        .json(new ApiResponse(500,null,"Fail to Retrieve Data from Database"))
+    }
+    return res.status(200)
+    .json(new ApiResponse(200,categorydata,"Data Retrieve Successful"))
+})
+
 export {
     registerUser,
     loginUser,
@@ -263,5 +293,7 @@ export {
     changeCurrentPassword,
     getCurrentUser,
     updateAccountDetails,
-    renderDashboard
+    renderDashboard,
+    getHistory,
+    getCategory
 }
