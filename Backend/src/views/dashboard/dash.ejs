@@ -39,7 +39,7 @@ the detail of the user.
     </div>
 
     <div class="main-content">
-        <h2>Welcome <%= user.username %> to FinTrack !!</h2>
+        <h2>Welcome <span style="color: rgb(62, 123, 42);"><%= user.username %></span> to FinTrack !!</h2>
         <br>
         <div class="sub-content">
             <div class="firstdiv">
@@ -87,8 +87,8 @@ the detail of the user.
                 </div>
                 <button id="convert-button">Convert</button>
                 <p id="result"></p>
-            </div>
-            <div class="history-section">
+                </div>
+            <div class="history-box">
                 <h3>Expense History</h3>
                 <table id="expenseHistoryTable">
                     <thead>
@@ -104,7 +104,6 @@ the detail of the user.
                     </tbody>
                 </table>
             </div>            
-            <!-- <div></div> history-box -->
         </div>
     </div>
     <script src="/javascript/currency-code.js"></script>
