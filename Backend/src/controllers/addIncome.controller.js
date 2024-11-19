@@ -17,7 +17,7 @@ const addIncome = asyncHandler(async(req,res)=>{
     const user = await User.findById(req.user?._id)
     const userId=req.user._id;
 
-    const newIncome = await income.create({
+    const newIncome = await Income.create({
         userId,
         amount,
         date
