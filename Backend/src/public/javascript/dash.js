@@ -47,6 +47,26 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch((error) => console.log("Error while fetching data:", error));
 });
+function updatePieChart(expense, income, balance) {
+  const expenseData = [expense, income, balance];
+
+  // Check if all data values are zero
+  const allZero = expenseData.every((value) => value === 0);
+
+  if (allZero) {
+    // Show "No data" message and hide the chart
+    noDataMessage.style.display = "block";
+    ctxPie.canvas.style.display = "none";
+  } else {
+    // Hide "No data" message and show the chart
+    noDataMessage.style.display = "none";
+    ctxPie.canvas.style.display = "block";
+  }
+
+  // Update chart data
+  expensePieChart.data.datasets[0].data = expenseData;
+  expensePieChart.update();
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   const url = "http://localhost:3000/api/v1/users/expense/history"; // Adjust this endpoint to match your actual route
@@ -87,7 +107,7 @@ function populateExpenseHistory(expenses) {
 
       // Amount
       const amountCell = document.createElement("td");
-      amountCell.textContent = `$${expense.amount}`;
+      amountCell.textContent = `₹${expense.amount}`;
       row.appendChild(amountCell);
 
       tableBody.appendChild(row);
@@ -163,28 +183,6 @@ function updateCategoryDoughnutChart() {
 // Call the function to fetch data and update the chart on page load
 document.addEventListener("DOMContentLoaded", updateCategoryDoughnutChart);
 
-
-
-function updatePieChart(expense, income, balance) {
-  const expenseData = [expense, income, balance];
-
-  // Check if all data values are zero
-  const allZero = expenseData.every((value) => value === 0);
-
-  if (allZero) {
-    // Show "No data" message and hide the chart
-    noDataMessage.style.display = "block";
-    ctxPie.canvas.style.display = "none";
-  } else {
-    // Hide "No data" message and show the chart
-    noDataMessage.style.display = "none";
-    ctxPie.canvas.style.display = "block";
-  }
-
-  // Update chart data
-  expensePieChart.data.datasets[0].data = expenseData;
-  expensePieChart.update();
-}
 
 let api = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`;
 const fromDropDown = document.getElementById("from-currency-select");
