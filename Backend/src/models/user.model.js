@@ -32,7 +32,8 @@ const userSchema = new Schema(
             type:String
         },
         finCoin:{
-            type:String
+            type:Number,
+            default:0
         },
         balance:{
             type:Number,

@@ -20,6 +20,10 @@ import {
 import {
     addGoal
 }from "../controllers/addGoal.controller.js"
+import {
+    goalAchieved,
+    goalFailed
+} from "../controllers/goalStatus.controller.js"
 import {verifyJWT} from "../middlewares/auth.middleware.js"
 
 const router = Router()
@@ -80,5 +84,7 @@ router.route("/goals")
     res.render()
 })
 router.route("/goals/addgoal").patch(verifyJWT,addGoal)
+router.route("/goals/achieved").patch(verifyJWT,goalAchieved)
+router.route("/goals/failed").patch(verifyJWT,goalFailed)
 
 export default router
