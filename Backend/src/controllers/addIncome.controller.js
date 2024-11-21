@@ -8,10 +8,14 @@ const addIncome = asyncHandler(async(req,res)=>{
     const {date,amount}=req.body
 
     if(!date){
-        throw new ApiError(400,"Date Field is Required")
+        return res.status(400).json(
+            new ApiError(400,"Date Field is Required")
+        )
     }
     if(!amount || amount==0){
-        throw new ApiError(400,"Amount Required for modification")
+        return res.status(400).json(
+            new ApiError(400,"Amount Required for modification")
+        )
     }
 
     const user = await User.findById(req.user?._id)

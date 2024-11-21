@@ -7,22 +7,30 @@ const goalAchieved = asyncHandler(async(req,res)=>{
     const {goalId}=req.body
 
     if(!goalId){
-        throw new ApiError(400,"GoalId is Not Given")
+        return res.status(400).json(
+            new ApiError(400,"GoalId is Not Given")
+        )
     }
 
     const user = await User.findById(req.user?._id)
     const goal = user.goals.find((g)=> g.goalId === goalId)
 
     if(!goal){
-        throw new ApiError(400,"Invalid GoalId")
+        return res.status(400).json(
+            new ApiError(400,"No Goals Found!!!")
+        )
     }
 
     if(goal.achieve==true){
-        throw new ApiError(400,"Goal Already Achieved , Can't Achieved Again");
+        return res.status(400).json(
+            new ApiError(400,"Goal Already Achieved , Can't Achieved Again")
+        )
     }
 
     if(goal.failed==true){
-        throw new ApiError(400,"Goal is Failed Already")
+        return res.status(400).json(
+            new ApiError(400,"Goal is Failed Already")
+        )
     }
 
     goal.achieve=true;
@@ -42,22 +50,30 @@ const goalFailed = asyncHandler(async(req,res)=>{
     const {goalId}=req.body
 
     if(!goalId){
-        throw new ApiError(400,"GoalId is Not Given")
+        return res.status(400).json(
+            new ApiError(400,"GoalId is Not Given")
+        )
     }
 
     const user = await User.findById(req.user?._id)
     const goal = user.goals.find((g)=> g.goalId === goalId)
 
     if(!goal){
-        throw new ApiError(400,"Invalid GoalId")
+        return res.status(400).json(
+            new ApiError(400,"No Goals Found!!!")
+        )
     }
 
     if(goal.failed==true){
-        throw new ApiError(400,"Can't Change Status as Goal is Already Failed")
+        return res.status(400).json(
+            new ApiError(400,"Can't Change Status as Goal is Already Failed")
+        )
     }
 
     if(goal.achieve==true){
-        throw new ApiError(400,"Can't Change Status as Goal is Already Achieved")
+        return res.status(400).json(
+            new ApiError(400,"Can't Change Status as Goal is Already Achieved")
+        )
     }
 
     goal.failed=true;

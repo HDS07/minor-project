@@ -7,7 +7,9 @@ const addGoal = asyncHandler(async(req,res)=>{
     const {goal,amount}=req.body
 
     if(!goal || !amount){
-        throw new ApiError(404,"Data Field is Required")
+        return res.status(404).json(
+            new ApiError(404,"Data Field is Required")
+        )
     }
 
     const user = await User.findById(req.user?._id)
