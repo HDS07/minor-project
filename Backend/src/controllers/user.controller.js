@@ -17,7 +17,9 @@ const generateAccessAndRefreshTokens = async(userId)=>{
         return {accessToken,refreshToken}
 
     }catch(error){
-        throw new ApiError(500,"Something Went Wrong while generating refresh and access token")
+        return res.status(500).json(
+            new ApiError(500,"Something Went Wrong while generating refresh and access token")
+        )
     }
 }
 
@@ -40,13 +42,17 @@ const registerUser = asyncHandler(async(req,res)=>{
     if(
         [fullName,email,username,password].some((field)=>field?.trim() === "")
     ){
-        throw new ApiError(400,"All Fields are Required")
+        return res.status(400).json(
+            new ApiError(400,"All Fields are Required")
+        )
     }
     const existedUser = await User.findOne({
         $or:[{username},{email}]
     })
     if(existedUser){
-        throw new ApiError(409,"User with email or username already exists")
+        return res.status(409).json(
+            new ApiError(409,"User with email or username already exists")
+        )
     }
     const user = await User.create({
         fullName,
@@ -60,7 +66,9 @@ const registerUser = asyncHandler(async(req,res)=>{
     )
 
     if(!createdUser){
-        throw new ApiError(500,"Something went Wrong While Registering the User")
+        return res.status(500).json(
+            new ApiError(500,"Something went Wrong While Registering the User")
+        )
     }
 
     return res.status(201).json(
@@ -78,19 +86,25 @@ const loginUser = asyncHandler(async(req,res)=>{
 
     const {email,username,password} = req.body
     if(!username && !email){
-        throw new ApiError(400,"Username Or Email is Required")
+        return res.status(400).json(
+            new ApiError(400,"Username Or Email is Required")
+        )
     }
 
     const user = await User.findOne({
         $or:[{username},{email}]
     })
     if(!user){
-        throw new ApiError(404,"User does not Exist")
+        return res.status(404).json(
+            new ApiError(404,"User does not Exist")
+        )
     }
 
     const isPasswordValid = await user.isPasswordCorrect(password)
     if(!isPasswordValid){
-        throw new ApiError(401,"Invalid user Credentials")
+        return res.status(401).json(
+            new ApiError(401,"Invalid user Credentials")
+        )
     }
 
     const {accessToken,refreshToken} = await generateAccessAndRefreshTokens(user._id)
@@ -149,7 +163,9 @@ const refreshAccessToken= asyncHandler(async(req,res)=>{
     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
 
     if(!incomingRefreshToken){
-        throw new ApiError(401,"Unathorized request")
+        return res.status(401).json(
+            new ApiError(401,"No Refresh Token Found")
+        )
     }
 
     try{
@@ -161,11 +177,15 @@ const refreshAccessToken= asyncHandler(async(req,res)=>{
         const user = await User.findById(decodedToken?._id)
     
         if(!user){
-            throw new ApiError(401,"Invalid refresh Token")
+            return res.status(401).json(
+                new ApiError(401,"Invalid refresh Token")
+            )
         }
     
         if(incomingRefreshToken !== user?.refreshToken){
-            throw new ApiError(401,"Refresh Token in Expired or Used")
+            return res.status(401).json(
+                new ApiError(401,"Refresh Token in Expired or Used")
+            )
         }
     
         const options = {
@@ -187,7 +207,9 @@ const refreshAccessToken= asyncHandler(async(req,res)=>{
             )
         )
     }catch(error){
-        throw new ApiError(401,error?.message || "Invalid Refresh Token")
+        return res.status(401).json(
+            new ApiError(401,error?.message || "Invalid Refresh Token")
+        )
     }
 
 })
@@ -200,7 +222,9 @@ const changeCurrentPassword = asyncHandler(async(req,res)=>{
     const isPasswordCorrect= await user.isPasswordCorrect(oldPassword)
 
     if(!isPasswordCorrect){
-        throw new ApiError(400,"Invalid old Password")
+        return res.status(400).json(
+            new ApiError(400,"Invalid old Password")
+        )
     }
 
     user.password = newPassword
@@ -226,7 +250,9 @@ const updateAccountDetails = asyncHandler(async(req,res)=>{
     const {fullName,email} = req.body
 
     if(!fullName || !email){
-        throw new ApiError(400,"All Fields are Required")
+        return res.status(400).json(
+            new ApiError(400,"All Fields are Required")
+        )
     }
 
     const user = await User.findByIdAndUpdate(
@@ -251,7 +277,7 @@ const renderDashboard = asyncHandler(async(req,res)=>{
     const user=await User.findById(userId)
     if(!user){
         return res.status(404)
-        .json(new ApiResponse(404,null,"User not Found"))
+        .json(new ApiError(404,null,"User not Found"))
     }
     res.render('dashboard/dash',{user})
 })
@@ -261,7 +287,7 @@ const getHistory = asyncHandler(async(req,res)=>{
     const expense=await Expense.find({userId:userId});
     if(!expense){
         return res.status(404)
-        .json(new ApiResponse(404,null,"Fail to Retrieve Data from User"))
+        .json(new ApiError(404,null,"Fail to Retrieve Data from User"))
     }
     return res.status(200)
     .json(new ApiResponse(200,expense,"History Retrieve Successful"))
@@ -279,7 +305,7 @@ const getCategory = asyncHandler(async(req,res)=>{
     }))
     if(!categorydata || categorydata.length===0){
         return res.status(500)
-        .json(new ApiResponse(500,null,"Fail to Retrieve Data from Database"))
+        .json(new ApiError(500,null,"Fail to Retrieve Data from Database"))
     }
     return res.status(200)
     .json(new ApiResponse(200,categorydata,"Data Retrieve Successful"))

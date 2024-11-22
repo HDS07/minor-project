@@ -29,11 +29,6 @@ logoutButton.addEventListener("click", async() => {
             const response = await fetch(url, options);
             console.log("Request sent to server");
 
-            // Check if response is ok (status code 200-299)
-            if (!response.ok) {
-                throw new Error(`Server error: ${response.status}`);
-            }
-
             // Parse response JSON
             const data = await response.json();
             console.log("Response from server:", data);

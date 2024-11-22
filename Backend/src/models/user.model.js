@@ -32,7 +32,8 @@ const userSchema = new Schema(
             type:String
         },
         finCoin:{
-            type:String
+            type:Number,
+            default:0
         },
         balance:{
             type:Number,
@@ -50,6 +51,38 @@ const userSchema = new Schema(
             {
                 type:Schema.Types.ObjectId,
                 ref:'Expense'
+            }
+        ],
+        incomes:[
+            {
+                type:Schema.Types.ObjectId,
+                ref:'Income'
+            }
+        ],
+        goals:[
+            {
+                goalId:{
+                    type:Number,
+                    required:true,
+                    default:0
+                },
+                goal:{
+                    type:String,
+                    required:true,
+                    trim:true
+                },
+                amount:{
+                    type:Number,
+                    required:true
+                },
+                achieve:{
+                    type:Boolean,
+                    default:false
+                },
+                failed:{
+                    type:Boolean,
+                    default:false
+                }
             }
         ]
     },

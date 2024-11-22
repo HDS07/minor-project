@@ -17,6 +17,13 @@ import {
 import {
     addExpense
 }from "../controllers/addExpense.controller.js"
+import {
+    addGoal
+}from "../controllers/addGoal.controller.js"
+import {
+    goalAchieved,
+    goalFailed
+} from "../controllers/goalStatus.controller.js"
 import {verifyJWT} from "../middlewares/auth.middleware.js"
 
 const router = Router()
@@ -72,5 +79,12 @@ router.route("/info")
 
 router.route("/expense/history").get(verifyJWT,getHistory)
 router.route("/expense/category").get(verifyJWT,getCategory)
+router.route("/goals")
+.get((req,res)=>{
+    res.render()
+})
+router.route("/goals/addgoal").patch(verifyJWT,addGoal)
+router.route("/goals/achieved").patch(verifyJWT,goalAchieved)
+router.route("/goals/failed").patch(verifyJWT,goalFailed)
 
 export default router
