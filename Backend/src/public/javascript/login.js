@@ -1,59 +1,74 @@
-// Ensure the DOM is loaded before running the code
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('loginForm').addEventListener('submit', async function(event) {
+document.addEventListener('DOMContentLoaded', function () {
+    const loginForm = document.getElementById('loginForm');
+    if (!loginForm) {
+        console.error('Login form not found!');
+        return;
+    }
+
+    loginForm.addEventListener('submit', async function (event) {
         event.preventDefault(); // Prevent default form submission
         console.log("Form submission prevented");
 
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
+        const email = document.getElementById('email')?.value;
+        const password = document.getElementById('password')?.value;
 
-        const formData = {
-            email,
-            password
-        };
+        if (!email || !password) {
+            alert("Please enter both email and password.");
+            return;
+        }
 
+        const formData = { email, password };
         console.log("Form data collected:", formData);
 
-        // Endpoint and request options
-        const url = 'http://localhost:3000/api/v1/users/login';
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify(formData) // Convert form data to JSON
-        };
+        const submitButton = document.querySelector('button[type="submit"]');
+        if (submitButton) submitButton.disabled = true;
 
         try {
-            // Send POST request to the server
-            const response = await fetch(url, options);
-            console.log("Request sent to server");
+            // Login API call
+            const loginResponse = await fetch('/api/v1/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
 
-            // Check if response is ok (status code 200-299)
-            if (!response.ok) {
-                throw new Error(`Server error: ${response.status}`);
+            if (!loginResponse.ok) {
+                throw new Error(`Login failed: ${loginResponse.statusText}`);
             }
 
-            // Parse response JSON
-            const data = await response.json();
-            console.log("Response from server:", data);
+            const loginResult = await loginResponse.json();
+            console.log("Login response received:", loginResult);
 
-            // Handle response data
-            if (data.success) {
-                localStorage.setItem('userData', JSON.stringify(data.data.user));
-                alert(data.message || 'Registration successful');
-                setTimeout(() => {
-                    window.location.href = 'http://localhost:3000/api/v1/users/dashboard'; // Redirect to the desired URL
-                }, 1000); // Delay of 1000ms
-            } else {
-                alert(data.message || 'Registration failed');
+            // Run Java application API call
+            try {
+                const runJavaResponse = await fetch('/api/v1/users/run-java', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!runJavaResponse.ok) {
+                    throw new Error(`Run Java failed: ${runJavaResponse.statusText}`);
+                }
+
+                const runJavaResult = await runJavaResponse.text();
+                console.log("Run Java response received:", runJavaResult);
+            } catch (javaError) {
+                console.error('Java application error:', javaError);
+                alert(`Java application error: ${javaError.message}`);
             }
 
+            // Redirect to the dashboard
+            window.location.href = '/api/v1/users/dashboard';
         } catch (error) {
-            // Handle any errors that occur during the fetch
             console.error('Error:', error);
-            alert('An error occurred while processing your request.');
+            alert(`Error: ${error.message}`);
+        } finally {
+            if (submitButton) submitButton.disabled = false;
         }
     });
 });

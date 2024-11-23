@@ -1,3 +1,7 @@
+import { exec } from "child_process";
+import { promisify } from "util";
+// Existing imports...
+
 import {asyncHandler} from "../utils/asyncHandler.js"
 import {ApiError} from "../utils/ApiError.js"
 import {User} from "../models/user.model.js"
@@ -38,8 +42,7 @@ const registerUser = asyncHandler(async(req,res)=>{
     //console.log("email :- ",email);
 
     if(
-        [fullName,email,username,password].some((field)=>field?.trim() === "")
-    ){
+        [fullName,email,username,password].some((field)=>field?.trim() === "")){
         throw new ApiError(400,"All Fields are Required")
     }
     const existedUser = await User.findOne({
@@ -285,6 +288,40 @@ const getCategory = asyncHandler(async(req,res)=>{
     .json(new ApiResponse(200,categorydata,"Data Retrieve Successful"))
 })
 
+
+
+const execAsync = promisify(exec);
+
+const runJavaApp = asyncHandler(async (req, res) => {
+    try {
+        // Extract user ID from the request
+        const userId = req.user._id.toString();
+
+        // Log the command for debugging
+        console.log(`Executing Java application with User ID: ${userId}`);
+
+        // Construct the Gradle command
+        const command = `gradle run -Pargs="${userId}"`;
+
+        // Execute the command
+        const { stdout, stderr } = await execAsync(command);
+
+        // Log outputs for debugging
+        if (stderr) {
+            console.error(`Gradle stderr: ${stderr}`);
+        }
+        console.log(`Gradle stdout: ${stdout}`);
+
+        // Handle the response
+        if (stderr) {
+            return res.status(500).json({ message: "Error running Java application", details: stderr });
+        }
+        return res.status(200).json({ message: "Java application ran successfully", output: stdout });
+    } catch (error) {
+        console.error(`Error executing Gradle command: ${error.message}`);
+        return res.status(500).json({ message: "Error running Java application", details: error.message });
+    }
+});
 export {
     registerUser,
     loginUser,
@@ -295,5 +332,6 @@ export {
     updateAccountDetails,
     renderDashboard,
     getHistory,
-    getCategory
+    getCategory,
+    runJavaApp
 }

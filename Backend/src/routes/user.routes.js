@@ -9,7 +9,8 @@ import {
     updateAccountDetails,
     renderDashboard,
     getHistory,
-    getCategory
+    getCategory,
+    runJavaApp
 } from "../controllers/user.controller.js"
 import {
     addIncome
@@ -18,7 +19,6 @@ import {
     addExpense
 }from "../controllers/addExpense.controller.js"
 import {verifyJWT} from "../middlewares/auth.middleware.js"
-
 const router = Router()
 router.route("/register")
 .get((req,res)=>{
@@ -44,6 +44,7 @@ router.route("/login")
 .post(loginUser)
 
 //Secured routes
+router.route("/run-java").post(verifyJWT, runJavaApp);
 router.route("/logout").post(verifyJWT,logoutUser)
 router.route("/refresh-token").post(refreshAccessToken)
 router.route("/change-password").post(verifyJWT,changeCurrentPassword)
