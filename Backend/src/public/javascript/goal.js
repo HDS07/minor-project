@@ -6,6 +6,7 @@ async function fetchGoals() {
       const data = await response.json();
       document.getElementById('coin-count').textContent = data.data.finCoin;
       document.getElementById('goal-count').textContent = data.data.goals.length;
+      renderGoals(data.data.goals);
     } else {
       console.error("Failed to fetch goals:", response.statusText);
       alert("Error fetching goals. Please try again.");
