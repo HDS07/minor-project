@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goal Setter</title>
+    <link rel="stylesheet" href="/css/goal.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Achieve Your Goal</h1>
+        <div>
+            <div class="coin-counter">Coins: <span id="coin-count">0</span></div>
+            <div class="goal-counter">Goals: <span id="goal-count">0</span></div>
+        </div>
+    </div>
+    <div class="goal-form">
+        <input type="text" id="goal" placeholder="Enter your Goal" list="suggestions">
+        <datalist id="suggestions">
+            <option value="Save your Amount 😊"></option>
+        </datalist>
+        <input type="number" id="amount" placeholder="Enter the Amount">
+        <button id="add-goal">ADD</button>
+    </div>
+
+    <div class="goal-list" id="goal-list">
+    </div>
+    <script src="/javascript/goal.js"></script>
+</body>
+</html>
