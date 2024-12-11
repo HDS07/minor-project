@@ -9,7 +9,7 @@ function initPieChart() {
       datasets: [
         {
           data: [0, 0, 0], // Placeholder data, will be updated dynamically
-          backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+          backgroundColor: ["#f87544", "#4491f8", "#2aa738"],
         },
       ],
     },
@@ -22,7 +22,7 @@ function initPieChart() {
         tooltip: {
           callbacks: {
             label: function (tooltipItem) {
-              return tooltipItem.label + ": $" + tooltipItem.raw;
+              return tooltipItem.label + ": ₹" + tooltipItem.raw;
             },
           },
         },
@@ -128,10 +128,10 @@ function initCategoryDoughnutChart() {
         {
           data: [], // Data will be set dynamically
           backgroundColor: [
-            "#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"
+            "#4BC0C0","#17c056","#9966FF", "#36A2EB", "#de3a80"
           ],
           hoverBackgroundColor: [
-            "#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"
+             "#4BC0C0","#17c056","#9966FF", "#36A2EB", "#de3a80"
           ]
         }
       ]
@@ -146,7 +146,7 @@ function initCategoryDoughnutChart() {
         tooltip: {
           callbacks: {
             label: function (tooltipItem) {
-              return tooltipItem.label + ": $" + tooltipItem.raw;
+              return tooltipItem.label + ": ₹" + tooltipItem.raw;
             }
           }
         }
