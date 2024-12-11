@@ -41,29 +41,21 @@ document.addEventListener('DOMContentLoaded', function () {
             const loginResult = await loginResponse.json();
             console.log("Login response received:", loginResult);
 
-            // Run Java application API call
-            try {
-                const runJavaResponse = await fetch('/api/v1/users/run-java', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    }
-                });
-
-                if (!runJavaResponse.ok) {
-                    throw new Error(`Run Java failed: ${runJavaResponse.statusText}`);
+            // Run Java application API call using AJAX
+            $.ajax({
+                url: '/api/v1/users/run-java',
+                method: 'POST',
+                dataType: 'json',
+                success: function (data) {
+                    console.log("Run Java response received:", data);
+                    // Redirect to the dashboard
+                    window.location.href = '/api/v1/users/dashboard';
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('Java application error:', errorThrown);
+                    alert(`Java application error: ${errorThrown}`);
                 }
-
-                const runJavaResult = await runJavaResponse.text();
-                console.log("Run Java response received:", runJavaResult);
-            } catch (javaError) {
-                console.error('Java application error:', javaError);
-                alert(`Java application error: ${javaError.message}`);
-            }
-
-            // Redirect to the dashboard
-            window.location.href = '/api/v1/users/dashboard';
+            });
         } catch (error) {
             console.error('Error:', error);
             alert(`Error: ${error.message}`);

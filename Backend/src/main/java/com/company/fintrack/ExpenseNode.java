@@ -1,24 +1,11 @@
-package com.company.fintrack;
-
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.model.Filters;
-import org.bson.Document;
-import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ExpenseNode {
-    private static final Logger logger = LoggerFactory.getLogger(ExpenseNode.class);
-
-    private ObjectId userId;
+    private String userId;
     private Date date;
     private String category;
     private String subcategory;
@@ -26,7 +13,7 @@ public class ExpenseNode {
     private Date timestamp;
     private ExpenseNode next;
 
-    public ExpenseNode(ObjectId userId, Date date, String category, String subcategory, double amount, Date timestamp) {
+    public ExpenseNode(String userId, Date date, String category, String subcategory, double amount, Date timestamp) {
         this.userId = userId;
         this.date = date;
         this.category = category;
@@ -36,85 +23,60 @@ public class ExpenseNode {
         this.next = null;
     }
 
-    public static List<ExpenseNode> fetchExpensesByUserId(String userId) {
-        List<ExpenseNode> expenses = new ArrayList<>();
+    public static List<ExpenseNode> createExpenseNodesFromJson(String expensesJson) {
+        List<ExpenseNode> expenses = new LinkedList<>();
+        expensesJson = expensesJson.substring(1, expensesJson.length() - 1); // Remove the surrounding brackets
+        String[] expenseArray = expensesJson.split("\\],\\[");
 
-        // MongoDB connection setup
-        String mongoUri = System.getenv("MONGODB_URI");
-        String dbName = System.getenv("DB_NAME");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-        if (mongoUri == null || dbName == null) {
-            logger.error("Environment variables MONGODB_URI or DB_NAME are not set.");
-            System.exit(1);
+        for (String expenseStr : expenseArray) {
+            expenseStr = expenseStr.replace("[", "").replace("]", ""); // Remove the surrounding brackets
+            String[] fields = expenseStr.split(",");
+            String userId = fields[0].trim().replace("\"", "");
+            Date date = null;
+            Date timestamp = null;
+            try {
+                date = dateFormat.parse(fields[1].trim().replace("\"", ""));
+                timestamp = dateFormat.parse(fields[5].trim().replace("\"", ""));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            String category = fields[2].trim().replace("\"", "");
+            String subcategory = fields[3].trim().replace("\"", "");
+            double amount = Double.parseDouble(fields[4].trim());
+
+            ExpenseNode expense = new ExpenseNode(userId, date, category, subcategory, amount, timestamp);
+            expenses.add(expense);
         }
 
-        try (MongoClient mongoClient = MongoClients.create(mongoUri)) {
-            MongoDatabase database = mongoClient.getDatabase(dbName);
-            MongoCollection<Document> collection = database.getCollection("expenses");
-
-            // Validate and convert userId
-            Bson filter;
-            if (ObjectId.isValid(userId)) {
-                filter = Filters.eq("userId", new ObjectId(userId.trim()));
-            } else {
-                filter = Filters.eq("userId", userId.trim());
-            }
-
-            logger.info("Running query with filter: {}", filter);
-            for (Document doc : collection.find(filter)) {
-                expenses.add(mapDocumentToExpenseNode(doc));
-            }
-
-            if (expenses.isEmpty()) {
-                logger.warn("No expenses found for User ID: {}", userId);
-            }
-        } catch (IllegalArgumentException e) {
-            logger.error("Invalid User ID format: {}", userId, e);
-        } catch (Exception e) {
-            logger.error("Error fetching expenses", e);
-        }
         return expenses;
     }
 
-    private static ExpenseNode mapDocumentToExpenseNode(Document doc) {
-        return new ExpenseNode(
-                doc.getObjectId("userId"),
-                doc.getDate("date"),
-                doc.getString("category"),
-                doc.getString("subcategory"),
-                doc.getDouble("amount"),
-                doc.getDate("createdAt")
-        );
-    }
-
     public static void main(String[] args) {
-        if (args.length < 1 || args[0].trim().isEmpty()) {
-            logger.error("User ID argument is missing or empty.");
+        if (args.length < 2 || args[0].trim().isEmpty() || args[1].trim().isEmpty()) {
+            System.err.println("User ID or expenses argument is missing or empty.");
             System.exit(1);
         }
 
         String userId = args[0].trim();
+        String expensesJson = args[1].trim();
 
-        if (!ObjectId.isValid(userId) && userId.isEmpty()) {
-            logger.error("Invalid User ID format: {}", userId);
-            System.exit(1);
-        }
-
-        logger.info("Fetching expenses for User ID: {}", userId);
-        List<ExpenseNode> expenses = fetchExpensesByUserId(userId);
+        System.out.println("Processing expenses for User ID: " + userId);
+        List<ExpenseNode> expenses = createExpenseNodesFromJson(expensesJson);
 
         if (expenses.isEmpty()) {
-            logger.info("No expenses found for User ID: {}", userId);
+            System.out.println("No expenses found for User ID: " + userId);
         } else {
-            logger.info("Expenses fetched successfully:");
-            expenses.forEach(expense -> logger.info(expense.toString()));
+            System.out.println("Expenses processed successfully:");
+            expenses.forEach(expense -> System.out.println(expense));
         }
     }
 
     @Override
     public String toString() {
         return "ExpenseNode{" +
-                "userId=" + userId +
+                "userId='" + userId + '\'' +
                 ", date=" + date +
                 ", category='" + category + '\'' +
                 ", subcategory='" + subcategory + '\'' +

@@ -8,6 +8,8 @@ import {User} from "../models/user.model.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
 import {Expense} from "../models/expense.model.js"
+import path from "path";
+import fs from "fs";
 
 const generateAccessAndRefreshTokens = async(userId)=>{
     try{
@@ -288,40 +290,84 @@ const getCategory = asyncHandler(async(req,res)=>{
     .json(new ApiResponse(200,categorydata,"Data Retrieve Successful"))
 })
 
+import { fileURLToPath } from 'url';
 
+// Simulate __dirname in ES6 modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const execAsync = promisify(exec);
 
 const runJavaApp = asyncHandler(async (req, res) => {
     try {
-        // Extract user ID from the request
+        // Extract user ID from the request (assuming authenticated user)
         const userId = req.user._id.toString();
 
+        // Fetch the user document and populate the expenses field
+        const user = await User.findById(userId).populate("expenses");
+        if (!user) {
+            throw new ApiError(404, "User not found");
+        }
+
+        // Extract the expenses data and format it for Java
+        const expenses = user.expenses.map((expense) => [
+            expense.userId.toString(),
+            expense.date.toISOString(),
+            expense.category,
+            expense.subcategory,
+            expense.amount,
+            expense.createdAt.toISOString(),
+        ]);
+
         // Log the command for debugging
-        console.log(`Executing Java application with User ID: ${userId}`);
+        console.log(
+            `Executing Java application with User ID: ${userId} and expenses: ${JSON.stringify(
+                expenses
+            )}`
+        );
 
-        // Construct the Gradle command
-        const command = `gradle run -Pargs="${userId}"`;
+        // Determine the project directory
+        const projectDir = path.resolve(__dirname, "../..");
 
-        // Execute the command
+        // Paths to the Java source and class files
+        const javaSrcPath = path.join(projectDir, "src/main/java/com/company/fintrack/ExpenseNode.java");
+        const javaBinPath = path.join(projectDir, "bin");
+
+        // Ensure the bin directory exists
+        if (!fs.existsSync(javaBinPath)) {
+            fs.mkdirSync(javaBinPath, { recursive: true });
+        }
+
+        // Compile the Java class
+        await execAsync(`javac -d "${javaBinPath}" "${javaSrcPath}"`);
+
+        // Properly format the command arguments
+        const formattedExpenses = JSON.stringify(expenses).replace(/"/g, '\\"'); // Escape double quotes for JSON
+        const command = `java -cp "${javaBinPath}" com.company.fintrack.ExpenseNode ${userId} '${formattedExpenses}'`;
+
+        // Execute the Java command
         const { stdout, stderr } = await execAsync(command);
 
-        // Log outputs for debugging
+        // Log Java outputs for debugging
         if (stderr) {
-            console.error(`Gradle stderr: ${stderr}`);
+            console.error(`Java stderr: ${stderr}`);
         }
-        console.log(`Gradle stdout: ${stdout}`);
+        console.log(`Java stdout: ${stdout}`);
 
-        // Handle the response
+        // Return the Java application output or errors
         if (stderr) {
             return res.status(500).json({ message: "Error running Java application", details: stderr });
         }
         return res.status(200).json({ message: "Java application ran successfully", output: stdout });
     } catch (error) {
-        console.error(`Error executing Gradle command: ${error.message}`);
+        console.error(`Error executing Java command: ${error.message}`);
         return res.status(500).json({ message: "Error running Java application", details: error.message });
     }
 });
+
+
+
+
 export {
     registerUser,
     loginUser,
