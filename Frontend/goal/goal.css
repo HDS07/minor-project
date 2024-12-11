@@ -1,0 +1,72 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+.coin-counter, .goal-counter {
+    font-size: 1.5rem;
+}
+
+.goal-form {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    gap: 10px;
+}
+
+.goal-form input, .goal-form button {
+    padding: 10px;
+    font-size: 1rem;
+}
+
+.goal-list {
+    margin-top: 20px;
+}
+
+.goal-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: background-color 0.3s, text-decoration 0.3s;
+}
+
+.goal-item.achieved {
+    background-color: rgba(144, 238, 144, 0.5);
+}
+
+.goal-item.not-achieved {
+    background-color: rgba(255, 182, 193, 0.5);
+    text-decoration: line-through;
+}
+
+.goal-item button {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    cursor: pointer;
+}
+
+.goal-item .tick {
+    background-color: green;
+    margin-right: 15px;
+}
+
+.goal-item .cross {
+    background-color: red;
+}
+
+.goal-item span {
+    width: 33%;
+    text-align: center;
+}
