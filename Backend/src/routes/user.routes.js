@@ -81,7 +81,7 @@ router.route("/expense/history").get(verifyJWT,getHistory)
 router.route("/expense/category").get(verifyJWT,getCategory)
 router.route("/goals")
 .get((req,res)=>{
-    res.render()
+    res.render('dashboard/goal')
 })
 router.route("/goals/addgoal").patch(verifyJWT,addGoal)
 router.route("/goals/achieved").patch(verifyJWT,goalAchieved)
