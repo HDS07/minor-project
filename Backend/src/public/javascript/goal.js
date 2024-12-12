@@ -27,6 +27,8 @@ function renderGoals(goals) {
   goals.forEach((goal) => {
     const goalItem = document.createElement("div");
     goalItem.className = "goal-item";
+    goalItem.className = `goal-item ${goal.achieve ? "achieved" : goal.failed ? "not-achieved" : ""}`;
+    goalItem.setAttribute("data-goal-id", goal.goalId);
     const goalIdText = document.createElement("span");
     goalIdText.textContent = `ID: ${goal.goalId}`;
     goalIdText.style.fontWeight = "bold";
