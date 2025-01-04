@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log("Form data collected:", formData);
 
         // Endpoint and request options
-        const url = 'http://localhost:3000/api/v1/users/login';
+        const url = '/api/v1/users/login';
         const options = {
             method: 'POST',
             headers: {
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 localStorage.setItem('userData', JSON.stringify(data.data.user));
                 alert(data.message || 'Registration successful');
                 setTimeout(() => {
-                    window.location.href = 'http://localhost:3000/api/v1/users/dashboard'; // Redirect to the desired URL
+                    window.location.href = '/api/v1/users/dashboard'; // Redirect to the desired URL
                 }, 1000); // Delay of 1000ms
             } else {
                 alert(data.message || 'Registration failed');

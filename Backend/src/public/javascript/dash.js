@@ -35,7 +35,7 @@ function initPieChart() {
 const expensePieChart = initPieChart();
 
 document.addEventListener("DOMContentLoaded", () => {
-  const url = "http://localhost:3000/api/v1/users/current-user";
+  const url = "/api/v1/users/current-user";
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
@@ -69,7 +69,7 @@ function updatePieChart(expense, income, balance) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const url = "http://localhost:3000/api/v1/users/expense/history"; // Adjust this endpoint to match your actual route
+  const url = "/api/v1/users/expense/history"; // Adjust this endpoint to match your actual route
   fetch(url)
       .then(response => response.json())
       .then(data => {
@@ -160,7 +160,7 @@ const categoryDoughnutChart = initCategoryDoughnutChart();
 
 // Function to fetch data and update the chart
 function updateCategoryDoughnutChart() {
-  const url = "http://localhost:3000/api/v1/users/expense/category"; // Adjust this endpoint to match your actual route
+  const url = "/api/v1/users/expense/category"; // Adjust this endpoint to match your actual route
   fetch(url)
     .then(response => response.json())
     .then(responseData => {

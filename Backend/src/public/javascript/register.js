@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log("Form data collected:", formData);
 
         // Endpoint and request options
-        const url = 'http://localhost:3000/api/v1/users/register';
+        const url = '/api/v1/users/register';
         const options = {
             method: 'POST',
             headers: {
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.success) {
                 alert(data.message || 'Registration successful');
                 setTimeout(() => {
-                    window.location.href = 'http://localhost:3000/api/v1/users/login'; // Redirect to the desired URL
+                    window.location.href = '/api/v1/users/login'; // Redirect to the desired URL
                 }, 1000); // Delay of 1000ms
             } else {
                 alert(data.message || 'Registration failed');

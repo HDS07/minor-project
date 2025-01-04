@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const url = "http://localhost:3000/api/v1/users/current-user";
+  const url = "/api/v1/users/current-user";
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
@@ -15,7 +15,7 @@ const logoutButton = document.getElementById("logout-button");
 // Handle the logout button click event
 logoutButton.addEventListener("click", async() => {
   // Make a POST request to the logout endpoint
-  const url = 'http://localhost:3000/api/v1/users/logout';
+  const url = '/api/v1/users/logout';
         const options = {
             method: 'POST',
             headers: {
@@ -37,7 +37,7 @@ logoutButton.addEventListener("click", async() => {
             if (data.success) {
                 alert(data.message || 'Logout Successfull');
                 setTimeout(() => {
-                    window.location.href = 'http://localhost:3000/api/v1/landing'; // Redirect to the desired URL
+                    window.location.href = '/api/v1/landing'; // Redirect to the desired URL
                 }, 500); // Delay of 1000ms
             } else {
                 alert(data.message || 'Error Occured');
